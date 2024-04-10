@@ -1,4 +1,7 @@
+
+header('Content-Type: application/json');
 <?php
+
 
 // Simulación de una base de datos de productos
 $products = array(
@@ -9,5 +12,7 @@ $products = array(
     array("id" => 5, "name" => "Pomelos", "category" => "fruites", "price" => 55)
 );
 
-header('Content-Type: application/json');
-echo json_encode($products);
+
+//alert( JSON.stringify(products) );
+json_encode($products);
+?>
