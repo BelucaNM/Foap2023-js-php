@@ -9,18 +9,12 @@ $products = array(
 ?>
 <table border="1">
 <?php
-$producte = null;
-foreach ($products as $product) {
-    ?>
-<tr><td><?=$product['name']?></td><td><?=$product['category']?></td><td><?=$product['price']?></td></tr>
-
+    $producte = null;
+    foreach ($products as $product) {
+?>
+    <tr><td><?=$product['name']?></td><td><?=$product['category']?></td><td><?=$product['price']?></td></tr>
 <?php
 
-}
-
-
-
-
+    }
 ?>
-
 </table>
