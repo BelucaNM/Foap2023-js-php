@@ -1,89 +1,178 @@
+<!DOCTYPE html>
 <html>
     <head>
+        <title> Formulario con desplegable y con validaciones </title>
         <meta charset="UTF-8">
-        <script src="js/products.js"></script>
-        <script src="js/register.js"></script>
-   <!-- >   <script src="js/introspeccio.js"></script> <-->
+    </head>
+    <body>
+        <form id="miForm"> 
+    
+            Nombre <input type="text" id="name" name="name"  minlength="4" maxlength="30" placeholder="introducir nombre"> <br>
+            Apellido <input type="text" id="apellido" name="apellido"  minlength="4" maxlength="30" placeholder="introducir apellido"><br>
+            <p>Provincia:   <select id="provincia" name="provincia"  onchange="javascript:updateMunicipios(this)">
+                            <option value="0">Seleccione Municipio</option>
+                            </select><br>
+            <p>Municipio:   <select id="municipio" name="municipio"></select><br>
+            Password : <input id = "psw1" type="Password" ><br>
+            Reintroduzca Password :<input id = "psw2" type="Password" >
+            <span id="content"></span><br>
+            email <input id="email" name="email"><br>
+            <span id="errores"></span><br>
+            <input type="submit" value="submit" >
+             
+        </form>
+    
     <script>
 
-        function getProductesFromServer() {
+    var arrayEmails;
 
-        fetch('llistatProductes-data.php')
-            .then(response => {
+    function updateProvincias() {
+        fetch('llistatProvincias.php')
+        .then(response => {
             if (!response.ok) {
-            throw new Error('No hi ha productes');
-            }
-            return response.json();
-            }).
-            then(data => {
-                productesRemots = data; 
-                console.log("productesRemots", productesRemots);
-                escriureTaula(productesRemots);
-
-            })
-            .catch(error => {
-                console.log('Error al rebre la llista de productes:', error);
-            });
-}
-        
-
-// event para garantizar que la página está cargada antes de comprobaciones en el DOCUMENT
-            document.addEventListener("DOMContentLoaded", function() {
-            let products = getProducts();
-            escriureTaula(products);
-
-            //Saca por Consola informacio del la pagina
-            let url = document.URL;
-            console.log ("la URL es :"+ url);
-
-            let formularios = document.forms;
-            console.log ("Los formularios :"+ formularios);
-            console.log ( "Hay :", document.forms.length, " formularios.");
-             for ( let i=0; i<formularios.length ;i++) {
-                let elForm = formularios[i];
-                let susElementos = elForm.elements;
-                for (let j=0; j<susElementos.length; j++) {
-                    console.log(susElementos[j].name);
+                throw new Error('No hi ha provincias');
                 }
-             };
+                return response.json()
+                })
+        .then (data => {
+                provincias = data 
+                console.log("provincias", provincias)
+                provincias.forEach(provincia => {
 
-            let imagenes = document.images;
-            console.log ("las imagenes : " + imagenes);
-            console.log ( "Hay :" +imagenes.length+ " imagenes.");
-            for (  i=0; i<imagenes.length ;i++) {console.log (imagenes[i])};
-
-            /*let x = document.getElementById("myform");
-            console.log ("El form by ID: " , x[0]);
-             x = document.getElementsByName("myform");
-            console.log ("El form By Name : " , x[0]);*/
-
+                console.log ("provincia es ", provincia)
+                let option = document.createElement ("option")
+                option.value = provincia.id //elem.id
+                option.text = provincia.name //elem.name
+                console.log ("option es ", option)
+                document.getElementById("provincia").appendChild(option) 
+  
+ 
+                })
             })
-        </script>
-    </head>
+        .catch(error => {
+                console.error('Error al rebre la llista de provincias:', error)
+        })
+        }
+        
+    function updateMunicipios() {
+        document.getElementById("municipio").innerHTML ="";
+        fetch('llistatMunicipios.php')
+        .then(response => {
+             if (!response.ok) {
+                throw new Error('No hi ha municipios')
+                }
+                return response.json()
+                })
+        .then (data => {
+                municipios = data; 
+                console.log("municipios", municipios);
+                municipios.forEach(municipio => {
 
-    <body>
-        <a href="#" onclick="javascript:ordenaPerNom()">[Ordena Nom]</a>&nbsp;<a href="#"  onclick="javascript:ordenaPerCategoria()">[Ordena per Categoria]</a>&nbsp;<a href="#"  onclick="javascript:ordenaPerPreu()">[Ordena per preu]</a>
-        <p><a href="#"  onclick="javascript:filtraPer('')">[Tots]</a><a href="#"  onclick="javascript:filtraPer('peixos')">[Filtra per Peixos]</a>&nbsp;<a href="#"  onclick="javascript:filtraPer('carns')">[Filtra per carns]</a>&nbsp;<a href="#"  onclick="javascript:filtraPer('fruites')">[Filtra per fruites]</a>
-        <table id="tauladeProductes" border="1"></table>
-        <div id="botonesForm"></div>
-        <hr>
-            <a onclick="javascript:getProductesFromServer()" href="#">Productos desde BD</a>&nbsp;&nbsp;&nbsp;<a href="llistatProductes.php">obtenir productes-NOVA-PÀGINA</a>
-        <hr>
+                    console.log ("municipio es ", municipio);
+                    let option = document.createElement ("option");
+                    option.value = municipio.id;    //elem.id
+                    option.text =  municipio.name;  //elem.name
+                    console.log ("option es ", option);
+                    document.getElementById("municipio").appendChild(option);  
 
-        <!-- > Insertar una IMG y FORM Para Probar DOM 
-        <img src="astronautaPeq.jpg">
-        <form id="myform" name="myform">
-            <label for="fname">First name:</label><br>
-            <input type="text" id="fname" name="fnombre" value=""><br>
-            <label for="lname">Last name:</label><br>
-            <input type="text" id="lname" name="apellidos" value=""><br><br>
-            <label for="psw">Password:</label><br>
-            <input type="text" id="psw" name="clavepaso" value=""><br><br>
-            <input type="submit" value="Submit">
-        </form>
-        <-->
+                })
+            })
+        .catch(error => {
+                console.error('Error al rebre la llista de municipios:', error)
+            })
+        }
+
+    function updateEmails() {
+
+        
+        fetch('llistatEmails.php')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No hi ha emails enregistrats');
+                }
+                return response.json()
+                })
+        .then (data => {
+                arrayEmails = data 
+                console.log("Emails", arrayEmails)
+                
+            })
+        .catch(error => {
+                console.error('Error al rebre la llista de emails:', error)
+        })
+        }
     
 
-    </body>
+    function getStrongLevel(password) {
+        var level = 0;
+        level += password.length > 6 ? 1 : 0;
+        level += /[!@#$%^&*?_~]{2,}/.test(password) ? 1 : 0;
+        level += /[a-z]{2,}/.test(password) ? 1 : 0;
+        level += /[A-Z]{2,}/.test(password) ? 1 : 0;
+        level += /[0-9]{2,}/.test(password) ? 1 : 0;
+        return level;
+    }
+        
+    function validaciones() { 
+                
+    // Password 1 == Pasword 2
 
-</html>
+        let $error = "";
+
+        let pasw1= document.getElementById ("psw1").value;
+        let pasw2= document.getElementById ("psw2").value;
+        if (pasw1 !== pasw2) {$error += " Passwords no coinciden."}
+        else {
+        // chequea que el password es robusto   
+            let level = getStrongLevel(pasw1);
+            console.log("pass:", pasw1, "level:", level);
+            let content = document.getElementById("content");
+            if (level < 2 ) {
+                content.innerText="nivell seguridad de "+ pasw1 +" es " +level+"." 
+                $error += " El nivel de seguridad " +level+" del password es insuficiente. " 
+                }
+            }
+   
+      
+        // email único al que corresponde un DNI
+        let elEmail = document.getElementById("email").value;
+        console.log ("elEmail que busco es ", elEmail)
+        // arrayEmails es una variable Global
+        arrayEmails.forEach(unEmail => {
+                    console.log ("elEmail que encuentro es ", unEmail);
+                    if (unEmail.email == elEmail) {
+                        console.log ("elDNI correspondiente al mail es ", unEmail.DNI)
+                        $error += " El Email ja está enregistrat."
+                    }
+                }) 
+            
+        let stringErrores = document.getElementById("errores")
+        stringErrores.innerText= $error 
+        
+        console.log( $error.length )
+        if ($error.length != 0) return true;
+        else return false;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() { 
+        
+        updateProvincias() 
+        updateEmails() 
+
+        const miForm = document.getElementById ("miForm")
+        console.log ( miForm)
+        miForm.addEventListener("submit", (e)=>{
+            e.preventDefault()
+           
+            /* Perform validation. When ready to submit: */
+            let hayError = validaciones()
+            if (!hayError)  miForm.submit() 
+        })
+    })
+         
+// falta actualizar los campos con las variables que se han recogido para que no haya que reentrarlo
+        
+    </script>
+    </body>
+    </html>
+   

@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <Title> Para lanzarEventos onChange. Desde un desplegable rellena otro desplegable</Title>
+        <script src="js/products.js"></script>
+        <script src="js/register.js"></script>
+<!-- >        <script src="js/introspeccio.js"></script> <-->
+        
+        <script>
+/*simulacion     function updateSubDesplegable(element) {
+                console.log ( "cambio en el elemento :" , element);
+                elDesplegable = window.document.getElementsByName("subCategory")[0];
+                console.log (elDesplegable);
+                let option = document.createElement ("option");
+                option.value = 1; //elem.id
+                option.text = "peixos";  //elem.name
+                elDesplegable.appendChild(option);
+              }
+              */
+              
+            let subCategories = [];
+
+            function updateSubDesplegable() {
+
+                fetch('llistatCategories-data.php')
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error('No hi ha subcategories');
+                    }
+                    return response.json();
+                }).
+                then (data => {
+                    subCategories = data; 
+                    console.log("subCategories", subCategories);
+                    subCategories.forEach(categoria => {
+                
+                    console.log ("categoria es ", categoria);
+                    let option = document.createElement ("option");
+                    option.value = categoria.id; //elem.id
+                    option.text = categoria.name;  //elem.name
+                    document.getElementById("subCategory").appendChild(option);  
+
+                    })
+                })
+
+                .catch(error => {
+                    console.error('Error al rebre la llista de productes:', error);
+                });
+            }
+            
+            document.addEventListener("DOMContentLoaded", function() {
+              products = getProducts();
+              escriureTaula(products);
+            })
+
+            
+
+            
+        </script>
+    </head>
+    <body>
+        <img width="200px" src="//www.sarti.webs.upc.edu/moodle/pluginfile.php/1/theme_klass/logo/1515671862/Logo%20Sarti%20blanc2.svg" alt="Formació Sarti">
+        <img width="200px" src="https://www.sarti.webs.upc.edu/web_v2/assets/onepage/img/logo/upc.png" alt="Formació Sarti">
+        <a href="">Login</a>&nbsp;<a href="">Registre</a>
+        
+        
+
+        <hr>
+
+
+            <form id="altaProducte" method="POST" action="afegeixProducte.php">
+                <input type="hidden" name="id" value="-1">
+                <input type="hidden" name="operation" value="add">
+                <!--input type="hidden" name="operacio" value="update"-->
+                
+                <p>Nom: <input type="text" name="name" value="MANDARINES">
+                <p>Categoria: <select name="category" onchange="updateSubDesplegable(this)">
+                            <option value="peix">Peix</option>
+                            <option value="carn">Carn</option>
+                            <option value="fruita">Fruita</option>
+                            </select>
+                <p>SubCategoria: <select id="subCategory"  name="subCategory" onchange="">
+                                 </select>
+                <p>Preu: <input type="number" name="price">
+                <p><input type="submit" name="enviar" value="enviar"></p>
+
+            </form>
+            <hr>
+            <a onclick="getProductesFromServer()" href="#">obtenir productes</a>&nbsp;&nbsp;&nbsp;<a href="llistatProductes.php">obtenir productes-NOVA-PÀGINA</a>
+            <hr>
+            <p><a href="#" onclick="javascript:ordenaPerNom()">[Ordena Nom]</a>&nbsp;<a href="#"  onclick="javascript:ordenaPerCategoria()">[Ordena per Categoria]</a>&nbsp;<a href="#"  onclick="javascript:ordenaPerPreu()">[Ordena per preu]</a>
+                <p><a href="#"  onclick="javascript:filtraPer('')">[Tots]</a><a href="#"  onclick="javascript:filtraPer('peixos')">[Filtra per Peixos]</a>&nbsp;<a href="#"  onclick="javascript:filtraPer('carns')">[Filtra per carns]</a>&nbsp;<a href="#"  onclick="javascript:filtraPer('fruites')">[Filtra per fruites]</a>
+            <br><br>
+            <table id="tauladeProductes" border="1"></table>
+
+       
+            <a href="#" onclick="javascript:obrirNovaFinestra()">Obrir nova finestra!!!</a>
+            <div id="contingut"></div>
+     </body>
+</html>

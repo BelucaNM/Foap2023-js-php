@@ -12,5 +12,5 @@ $productos = array(
 header('Content-Type: application/json');
 
 
-    json_encode($productos);
+echo json_encode($productos);
 ?>
