@@ -13,13 +13,13 @@ function validate_input($input){ // sanear datos
 if (($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST['submit'])) { // verificar entrada por formulario
 
     $username = validate_input ($_POST['uname']);
-    $password = validate_input ($_POST['pwd']);
+    $password = validate_input ($_POST['psw']);
 
     $passwordcodif = $password;
-    echo $username;
-    echo $passwordcodif;
+    // echo $username."<br>";
+    // echo $passwordcodif;
 
-    if ($username == 'belu' &&  $passwordcodif = 'belu'){  // poner un user/pswcodigf conocido
+    if ($username == 'belu' &&  $passwordcodif == 'belu'){  // poner un user/pswcodigf conocido
         session_start([
             'use_only_cookies'=> 1,
             'cookie_lifetime'=> 0,
@@ -37,12 +37,13 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST['submit'])) { // veri
             setcookie($cookie_name,$cookie_value,$cookie_expiry_time,"/","",true,true);
             
         }
+        // echo "LLamo a Home ";
         header ("location:home.php");
 
-    
-    }else{ // credenciales no correctas
+        
+    } else { 
+        // echo "credenciales no correctas";
         header ("location:formularioBSCookies.php?err=1 ");
-
 
     };
 };
