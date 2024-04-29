@@ -1,0 +1,90 @@
+<HTML>
+    <HEAD>
+    <title> añadirBorrarElementTable.php Crea tabla PHP con links a Delete</title>
+            <meta charset="utf-8" >
+            <link rel="canonical" href="https://multitod.com/iconos-para-paginas-web-codigo-php.php" />
+            <style>
+                
+                .icoBoli {font-size: 20px;}
+                .icoBasu {font-size: 20px;}
+                .icoEscr {font-size: 20px; opacity = 0}
+                .icoDown {font-size: 20px;}
+                td { border: 2px solid red;}
+                table {border:  collapse; }
+                .carpeta {opacity: 0;}
+            </style>  
+    </HEAD>
+    
+    <body>
+
+        <p> Añadir-borrar Tabla </p>
+        <table id="laTable">
+            <tbody>
+            <tr> 
+                <td> id </td>
+                <td> Nombre </td>
+            </tr>
+        </tbody>
+        </table>
+        <div>
+         <a href='javascript:añadeFila()'> Afegir </a>
+        </div>
+           
+        <SCRIPT>
+        //  src ="/js/codigo.js"; 
+        let laTable= document.getElementById('laTable');
+        let tbody = laTable.getElementsByTagName('tbody')[0];
+
+        function añadeFila() {
+
+            let laTable= document.getElementById('laTable');
+            let numeroFila = laTable.rows.length;
+            let tbody = laTable.getElementsByTagName('tbody')[0];
+            let nuevaFila = tbody.insertRow();
+            let cell1 = nuevaFila.insertCell (0);
+            let cell2 = nuevaFila.insertCell (1);
+            let cell3 = nuevaFila.insertCell (2);
+            cell1.textContent = numeroFila;
+            cell2.textContent = "F**"+numeroFila;
+            enlace = document.createElement("a");
+            enlace.href="#";
+            enlace.textContent="X";
+            enlace.onclick = function () {
+                borraFila(nuevaFila);
+            }
+            cell3.appendChild(enlace);
+
+            elSpan = document.createElement("span");
+            elSpan.className = 'icoBasu';
+            elSpan.textContent = '&#128465;';
+            enlace.appendChild (elSpan);
+            //cell3.innerHTML = "<a href='javascript:borraFila(this);'><span class='icoBasu'>&#128465;</span></a></td></tr>";
+            };
+
+        function borraFila(laFila) {
+            console.log(laFila);
+//          let laFila = Id.parentElement.parentElement; No funciona
+//          let table = document.getElementById("laTable"); 
+            tbody.removeChild(laFila);
+        };
+    
+        function creaTable() {
+            for (var i = 1; i < 10; i++) {
+                let nuevaFila = tbody.insertRow();
+                let cell1 = nuevaFila.insertCell (0);
+                let cell2 = nuevaFila.insertCell (1);
+                let cell3 = nuevaFila.insertCell (2);
+                cell1.textContent = i;
+                cell2.textContent = "F"+i;
+                cell3.innerHTML = "<a href='#' onclick ='javascript:borraFila("+nuevaFila+");'><span class='icoBasu'>&#128465;</span></a></td></tr>";
+                };
+            } ;
+
+        creaTable();    
+        
+    
+        </SCRIPT>
+        
+    
+    </body>
+    </html>
