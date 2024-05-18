@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta HTTP-EQUIV="Expires" CONTENT="no-cache">
+		<meta charset="UTF-8">
+		<meta name="description" content="Formulario">
+		<title>Formulario4 Login con comprobacion por fetch que email existe y dos desplegables provincias/municipios con fetch</title>
+		<style>
+			label:not(.inline), input:not(.inline), textarea{
+				display: block;
+			}
+			
+            * {font-family: Verdana, Geneva, Tahoma, sans-serif;}
+
+            
+		</style>
+	</head>
+	<body>
+		<form method="post" action="#" name="miForm">
+			<h2>Formulario de registro</h2>			
+			<label for="fusername"><strong>Username:</strong>
+            <input id="fusername" type="text" name="fusername" maxlength="50" size="50" placeholder="Introducir username"></label>
+			<span id="fusernameError" style="font-size: small; color: #f00;"></span><br>
+			
+			<label for="fprovincia"><strong>Provincia: </strong></label>
+            <select id="fprovincia" name="fprovincia" onchange="updateSubDesplegable(this)">
+			
+ <!-- >            <select id="fprovincia" name="fprovincia" > <-->
+            <option value="">---------</option>
+			<option value="1" >Barcelona</option>
+			<option value="2" >Tarragona</option>
+            <option value="3" >LLeida</option>
+			<option value="4" >Girona</option>
+			</select>
+			<br><span id="fprovinciaError" style="font-size: small; color: #f00;"></span>
+				
+			<label for="fpoblacion"><strong>Población: </strong></label>
+			<select id="fpoblacion" name="fpoblacion">
+			<option value="">---------</option>
+			</select>
+			<br><span id="fpoblacionError" style="font-size: small; color: #f00;"></span>				
+			
+            <label for="femail"> email:</label>
+            <input type="text"  id="femail"  name="femail"  placeholder="Introducir email">
+            <span id="femailError" style="font-size: small; color: #f00;"></span>
+            
+
+            <input type="submit" name="envio" value="OK">
+		</form>
+
+	<script>
+
+        const patternEmail=/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        
+		function fvalido(str, pattern){
+			let etiqueta = document.getElementById(str).value.trim(); //quitamos espacios blancos delante y detras
+			strError = str +"Error";
+			console.log(strError);
+			let etiquetaError = document.getElementById(strError)
+            if(etiqueta.length==0){ // obligatorio
+                etiquetaError.innerHTML = "El campo es obligatorio"
+                return true
+            }else{
+                if (pattern != null) {
+                    if (!patternEmail.test(str)){
+                        error = true;
+                        etiquetaError.innerHTML = "El input no es valido"
+                        return true
+                    }
+                
+                }else{
+                    etiquetaError.innerHTML =""
+				    return false
+                };
+            };
+		};
+    
+ 
+    function updateSubDesplegable() {
+        
+        document.getElementById("fpoblacion").options.length = 0;
+        console.log (fprovincia);
+        let municipios = [];
+        let laprovincia = fprovincia.selectedOptions[0].innerText;
+        console.log(laprovincia);
+        
+
+        fetch('llistatMunicipios-data.php')
+        .then(response => {
+                if (!response.ok) {
+                    throw new Error('No hi ha municipios');
+                    }
+                return response.json();
+                })
+        .then (data => {
+                municipios = data; 
+                console.log("municipios", municipios);
+                municipios.forEach(municipio => {
+                if (municipio ["provincia"] === laprovincia ) {
+                        console.log ("municipio es ", municipio);
+                        let option = document.createElement ("option");
+                        option.value = municipio.id; //elem.id
+                        option.text = municipio.name; //elem.id
+                        document.getElementById("fpoblacion").appendChild(option);
+                }  
+
+                })
+                })
+
+        .catch(error => {
+            console.error('Error al rebre la llista de municipios:', error);
+        });
+
+        femail.addEventListener('onclick', ()=>{
+
+        });
+    };
+
+
+		miForm.addEventListener('submit', ()=>{
+	
+            // inicializar variables
+			
+
+            //interrumpe el funcionamiento del evento que lo envoca en este caso es el submit, por lo tanto para el envio del formulario
+            event.preventDefault()
+
+            // validaciones
+			let error= false ;
+			error = fvalido ("fusername",null);
+			error = fvalido ("femail",patternEmail);
+
+            console.log (document.querySelector('input[name="fprovincia"]:checked'))
+			if (document.querySelector('input[name="fprovincia"]:checked') == null){
+					error = true;
+                    fprovinciaError.innerHTML = " Seleccione provincia"
+            }else {
+                    fprovinciaError.innerHTML =""
+            };
+
+            
+			console.log (document.querySelector('input[name="fpoblacion"]:checked'))
+			if (document.querySelector('input[name="fpoblacion"]:checked') == null){
+					error = true;
+                    fpoblacionError.innerHTML = " Seleccione poblacion"
+            }else {
+                    fpoblacionError.innerHTML =""
+            };
+			
+          		
+                     
+            //Si no hay ningun error enviar el formulario
+            if(!error) miForm.submit()
+                
+        });
+
+	</script>		
+	</body>
+</html>

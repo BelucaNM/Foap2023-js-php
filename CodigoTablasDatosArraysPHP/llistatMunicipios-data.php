@@ -25,7 +25,4 @@ $municipios = array(
 
 header('Content-Type: application/json');
 
-var_dump(
-    $municipios,
-    json_encode($municipios));
-?>
+echo json_encode($municipios);
