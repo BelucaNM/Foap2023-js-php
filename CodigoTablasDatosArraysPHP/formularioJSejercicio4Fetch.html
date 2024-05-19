@@ -4,7 +4,10 @@
 		<meta HTTP-EQUIV="Expires" CONTENT="no-cache">
 		<meta charset="UTF-8">
 		<meta name="description" content="Formulario">
-		<title>Formulario4 Login con comprobacion por fetch que email existe y dos desplegables provincias/municipios con fetch</title>
+		<title>Formulario4 Login con comprobacion por fetch que email existe y dos desplegables provincias/municipios
+            Hace recuperacion de municipios mediante fetch programa php
+            Requiere servicio/servidor PHP 
+        </title>
 		<style>
 			label:not(.inline), input:not(.inline), textarea{
 				display: block;
@@ -111,7 +114,7 @@
             console.error('Error al rebre la llista de municipios:', error);
         });
 
-        femail.addEventListener('onclick', ()=>{
+        femail.addEventListener('click', ()=>{
 
         });
     };
