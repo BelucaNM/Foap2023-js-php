@@ -19,7 +19,7 @@
 		</style>
 	</head>
 	<body>
-		<form method="post" action="#" name="miForm">
+		<form method="GET" action="#" name="miForm">
 			<h2>Formulario de registro</h2>			
 			<label for="fusername"><strong>Username:</strong>
             <input id="fusername" type="text" name="fusername" maxlength="50" size="50" placeholder="Introducir username"></label>
@@ -53,26 +53,27 @@
 
 	<script>
 
+//        const patternEmail=/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
         const patternEmail=/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
         
-		function fvalido(str, pattern){
-			let etiqueta = document.getElementById(str).value.trim(); //quitamos espacios blancos delante y detras
-			strError = str +"Error";
-			console.log(strError);
-			let etiquetaError = document.getElementById(strError)
-            if(etiqueta.length==0){ // obligatorio
-                etiquetaError.innerHTML = "El campo es obligatorio"
+		function fvalido(elId, pattern){
+			let valor = document.getElementById(elId).value.trim(); //quitamos espacios blancos delante y detras
+			let strIdError = elId +"Error";
+			console.log(strIdError);
+			let elIdError = document.getElementById(strIdError)
+            if(valor.length==0){ // obligatorio
+                elIdError.innerHTML = "El campo es obligatorio"
                 return true
             }else{
                 if (pattern != null) {
-                    if (!patternEmail.test(str)){
+                    if (!pattern.test(valor)){
                         error = true;
-                        etiquetaError.innerHTML = "El input no es valido"
+                        elIdError.innerHTML = "El input no es valido"
                         return true
                     }
                 
                 }else{
-                    etiquetaError.innerHTML =""
+                    elIdError.innerHTML =""
 				    return false
                 };
             };
@@ -81,7 +82,13 @@
  
     function updateSubDesplegable() {
         
-        document.getElementById("fpoblacion").options.length = 0;
+        document.getElementById("fpoblacion").options.length = 0; // Borra las opciones previas
+        // añade la primera linea de las opciones
+        let option = document.createElement ("option");
+        option.value = ""; //Es la primera opcion que no es valida
+        option.text = "---------"; //
+        document.getElementById("fpoblacion").appendChild(option);
+
         console.log (fprovincia);
         let municipios = [];
         let laprovincia = fprovincia.selectedOptions[0].innerText;
@@ -133,8 +140,9 @@
 			error = fvalido ("fusername",null);
 			error = fvalido ("femail",patternEmail);
 
-            console.log (document.querySelector('input[name="fprovincia"]:checked'))
-			if (document.querySelector('input[name="fprovincia"]:checked') == null){
+            let laprovincia = document.getElementById('fprovincia').selectedOptions[0].innerText;
+            console.log (laprovincia);
+			if ((laprovincia === null) || (laprovincia === "---------")){
 					error = true;
                     fprovinciaError.innerHTML = " Seleccione provincia"
             }else {
@@ -142,8 +150,9 @@
             };
 
             
-			console.log (document.querySelector('input[name="fpoblacion"]:checked'))
-			if (document.querySelector('input[name="fpoblacion"]:checked') == null){
+			let lapoblacion = document.getElementById('fpoblacion').selectedOptions[0].innerText;
+            console.log (lapoblacion);
+			if ((lapoblacion === null) || (lapoblacion === "---------")) {
 					error = true;
                     fpoblacionError.innerHTML = " Seleccione poblacion"
             }else {
@@ -153,7 +162,7 @@
           		
                      
             //Si no hay ningun error enviar el formulario
-            if(!error) miForm.submit()
+            if(!error) miForm.submit();
                 
         });
 
