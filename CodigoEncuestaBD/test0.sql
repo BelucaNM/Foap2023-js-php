@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-06-2024 a las 02:03:51
+-- Tiempo de generación: 10-06-2024 a las 18:49:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -46,10 +46,10 @@ INSERT INTO `empresas` (`id`, `nombre`, `direccion`, `telefono`, `CIF`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `encuestas`
+-- Estructura de tabla para la tabla `encuesta`
 --
 
-CREATE TABLE `encuestas` (
+CREATE TABLE `encuesta` (
   `id` int(11) NOT NULL,
   `titulo` varchar(30) NOT NULL,
   `idUsuario` int(11) NOT NULL,
@@ -14823,9 +14823,9 @@ ALTER TABLE `empresas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `encuestas`
+-- Indices de la tabla `encuesta`
 --
-ALTER TABLE `encuestas`
+ALTER TABLE `encuesta`
   ADD PRIMARY KEY (`id`),
   ADD KEY `iUsuario` (`idUsuario`);
 
@@ -14887,10 +14887,10 @@ ALTER TABLE `empresas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `encuestas`
+-- AUTO_INCREMENT de la tabla `encuesta`
 --
-ALTER TABLE `encuestas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `encuesta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `localidades`
@@ -14939,11 +14939,11 @@ ALTER TABLE `empresas`
   ADD CONSTRAINT `empresas_ibfk_1` FOREIGN KEY (`id`) REFERENCES `personas` (`idEmpresa`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `encuestas`
+-- Filtros para la tabla `encuesta`
 --
-ALTER TABLE `encuestas`
-  ADD CONSTRAINT `encuestas_ibfk_2` FOREIGN KEY (`id`) REFERENCES `opciones` (`idEncuesta`) ON DELETE CASCADE,
-  ADD CONSTRAINT `encuestas_ibfk_3` FOREIGN KEY (`idUsuario`) REFERENCES `personas` (`id`) ON DELETE CASCADE;
+ALTER TABLE `encuesta`
+  ADD CONSTRAINT `encuesta_ibfk_2` FOREIGN KEY (`id`) REFERENCES `opciones` (`idEncuesta`) ON DELETE CASCADE,
+  ADD CONSTRAINT `encuesta_ibfk_3` FOREIGN KEY (`idUsuario`) REFERENCES `personas` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `mensajes`
@@ -14955,7 +14955,7 @@ ALTER TABLE `mensajes`
 -- Filtros para la tabla `opciones`
 --
 ALTER TABLE `opciones`
-  ADD CONSTRAINT `iOpcion` FOREIGN KEY (`idEncuesta`) REFERENCES `encuestas` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `iOpcion` FOREIGN KEY (`idEncuesta`) REFERENCES `encuesta` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `personas`
