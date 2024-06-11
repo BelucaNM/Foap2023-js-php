@@ -1,32 +1,29 @@
-function registraBDEncuesta (encuesta){ 
+function registraBDEncuesta (){ 
     console.log ( "Entro en registraBDEncuesta.js")
             
     const encuesta = {
         "idUsuario": 4,
-        "titulo": "",
+        "titulo": "Cual es tu personaje favorito de los Simpson?",
         "fechaInicio":"",
         "fechaFin": "",
-        "Opcion1": "",
-        "Opcion2": "",
-        "Opcion1": "",
-        "Opcion1": "",
+        "Opciones": ["Homer", "Lisa", "Marge", "NO se mas",]
     
     };
     const update = {data:[]};
     update.data.push(encuesta);
     
-    dataSon = JSON.stringify(data);
+    dataSon = JSON.stringify(update);
     console.log (dataSon);
 
-    
+/*    
     const options = {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(update),
             };
-        
+*/       
     const enviar = async () => {
         
             
@@ -35,7 +32,7 @@ function registraBDEncuesta (encuesta){
                         method: "POST",
                         cache: "no-cache",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(data)
+                        body: JSON.stringify(update)
                     });
                     if (response.ok) {
                         console.log(response);

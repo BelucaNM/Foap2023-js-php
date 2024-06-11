@@ -13,8 +13,16 @@ $conn = new mysqli($servername, $username, $password, $dbname); // Create connec
 if ($conn->connect_error) {// Check connection
     echo json_encode("No se pudo conectar, mostrando error de MySql: " . mysqli_connect_error());
 }else{
-    $sqlTodas ="";
-    $update = $_POST['data'];
+    echo json_encode("Start Transaction") ;
+    $sqlTodas ="START TRANSACTION;";
+//    $update = $_POST['data'];
+
+$update = array (0 => array(
+    'idUsuario' => 4,
+    'titulo'  =>"Cual es tu personaje favorito de los Simpson?",
+    'fechaInicio'=>"",
+    'fechaFin'=>"",
+    'opciones'=> ["Homer", "Lisa", "Marge", "NO se mas",]));
    
     for ($i = 0; $i<count($update); $i++) {
         
@@ -22,23 +30,44 @@ if ($conn->connect_error) {// Check connection
         $titulo =  $update[$i]['titulo'];
         $fechaInicio = $update[$i]['fechaInicio'];
         $fechaFin =  $update[$i]['fechaFin'];
-        $Opcion1 =  $update[$i]['Opcion1'];
-        $Opcion2 =  $update[$i]['Opcion2'];
-        $Opcion3 =  $update[$i]['Opcion3'];    
-        $Opcion4 =  $update[$i]['Opcion4'];
-     
-     
-       
+
+/*        $sql= " 
+            INSERT INTO encuestas (id, titulo, idUsuario, fechaInicio, fechaFinal) 
+                VALUES ('', $titulo, $idUsuario, $fechaInicio, $fechaFin);
+            @A:= SELECT LAST_INSERT_ID();";
         
+            $sqlTodas .= $sql; */
+
+
+            $sql= " 
+            INSERT INTO encuestas (id, titulo, idUsuario, fechaInicio, fechaFinal) 
+                VALUES ('', 'Cual es tu personaje favorito de los Simpson?', '4', 
+                        '2024-06-10 22:41:23.000000', '2024-06-12 22:41:23.000000');
+            @A:= SELECT LAST_INSERT_ID();";
+            $sqlTodas .= $sql;
+
+
+            for ($j = 0; $j<count($update[$i]['opciones']); $j++) {
+            /*  $sql= " INSERT INTO opciones (id, idEncuesta,idOpcion,texto) 
+                        VALUES ('',@A,$j,$update[$i]['opciones'][$j]);";
+                $sqlTodas .= $sql ;*/
+                };
+            
     };
-  
-/*
-    $sqlTodas =" UPDATE subscripciones SET activa = 1  WHERE  subscriptor = 4 and siguiendoA = 5;
-    UPDATE subscripciones SET activa = 1  WHERE  subscriptor = 4 and siguiendoA = 7; 
-    UPDATE subscripciones SET activa = 1  WHERE  subscriptor = 4 and siguiendoA = 1; ";  
-    
-    */ 
-    if ($conn->multi_query($sqlTodas) === TRUE) {
+          echo ($sqlTodas) ;     
+
+/* genera $sql y las envadena*/
+        
+    $sql = "
+    INSERT INTO opciones (id, idEncuesta,idOpcion,texto) VALUES ('',@A,0,'Homer'); 
+    INSERT INTO opciones (id, idEncuesta,idOpcion,texto) VALUES ('',@A,1,'Lisa); 
+    INSERT INTO opciones (id, idEncuesta,idOpcion,texto) VALUES ('',@A,2,'Marge'); 
+    INSERT INTO opciones (id, idEncuesta,idOpcion,texto) VALUES ('',@A,3,'yoQueSe');
+    COMMIT;";
+    $sqlTodas .= $sql ;
+    echo json_encode($sqlTodas) ;
+
+    if ($conn->multi_query($sql) === TRUE) {
         echo json_encode("New records created successfully");
     } else {
         echo json_encode("Error");
