@@ -64,7 +64,7 @@
         <div  id="contenedor" class = " container pt-3 pb-3 mt-3 bg-light shadow-lg">
             <form id="miForm" name="miForm" method="post">
             <div class="form-floating mb-3 mt-3">
-                <input id="fpregunta" name="fpregunta" class="form-control" size = 35  placeholder="Cualquier persona puede contestar !!" class="form-control"></input>
+                <input id="fpregunta" name="fpregunta" class="form-control" size = 35  placeholder="Cualquier persona puede contestar !!" class="form-control" style="overflow:hidden"></input>
                 <label for ="fpregunta" class="form-label" size = 35>Cualquier persona puede contestar !!</label>
                 <div id="selectedIconContainer">
                     <span id="selectedIcon"></span>
@@ -437,14 +437,21 @@
     // Selecciona todos los inputs dentro del div seleccionado
             const inputs = divOpciones.querySelectorAll('input');
     
-    
+            // 0 significa 01.01.1970 UTC+0
+            let fechaInicio= new Date();
+
+
+            // ahora se le agregan 2 días 
+            let fechaFin = new Date(2*24 * 3600 * 1000);
+
+
         window.encuesta = {
-        "idUsuario": 4,
+        "idUsuario": 1, // se fuerza a 1
         "titulo": vpregunta,
-        "fechaInicio":"",
-        "fechaFin": "",
+        "fechaInicio":fechaInicio,
+        "fechaFin": fechaFin,
         "opciones": []
-    };
+        };
 
     // Las dos primeras opciones son obligatorias
             inputs.forEach((input, index) => {
