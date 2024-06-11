@@ -13,21 +13,31 @@ $conn = new mysqli($servername, $username, $password, $dbname); // Create connec
 if ($conn->connect_error) {// Check connection
     echo json_encode("No se pudo conectar, mostrando error de MySql: " . mysqli_connect_error());
 }else{
-
-/*    $leer = $_POST['data'];
-    $id = $leer['id'];*/
-
-    $id = 1;
     
-    $sql ="SELECT e.titulo, e.idUsuario, e.fechaInicio, e.fechaFin, o.idOpcion, o.texto FROM encuestas as e
-                JOIN
-                opciones as o ON e.id = o.idEncuesta 
-                WHERE e.id = '$id';";
-    print ($sql);
+    $update = $_POST['data'][0];
 
+    $id = $update['id'];
+    // datos encuesta
+    $sql ="SELECT idUsuario, titulo, fechaInicio, fechaFin  FROM encuestas as e WHERE e.id = $id;"; 
     $result = $conn->query($sql);
+    $datos = $result->fetch_assoc();
+    $update['titulo'] = $datos['titulo'];
+    $update['idUsuario'] = $datos['idUsuario'];
+    $update['fechaInicio']= $datos['fechaInicio']; 
+    $update['fechaFin'] = $datos['fechaFin'];
+    $update['opciones'] = [];
+
+    // select opciones
+    $update ['opciones'] =[];
+    $sql ="SELECT idOpcion, texto  FROM opciones as o WHERE e.idEncuesta = $id;"; 
+    $result = $conn->query($sql);
+    while($row = $result->fetch_assoc()) {
+        $update['opciones'][] = $row;};
+
+    $encuesta=array('data'=>$update);
+        
     $conn->close(); 
-    echo json_encode($result);
+    echo json_encode($encuesta);
     
 };
 

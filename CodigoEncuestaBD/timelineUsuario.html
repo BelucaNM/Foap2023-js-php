@@ -69,8 +69,8 @@ function refrescaPorcentajes(){
 function leerBDEncuesta(){
     console.log ( "Entro en leerBDEncuesta.js")
     window.encuesta = {
-        "id": idEncuesta,
-        "idUsuario": "", // se fuerza a 1
+        "id": 1,
+        "idUsuario": "",
         "titulo": "",
         "fechaInicio":"",
         "fechaFin": "",
@@ -94,10 +94,12 @@ function leerBDEncuesta(){
 
     const enviar = async () => {
         try {
-            const response = await fetch('updateEncuesta.php', options);
+            const response = await fetch('leerBDEncuesta.php', options);
             if (response.ok) { // Verificar si la respuesta es exitosa
                 const resultado = await response.json();
-                console.log(resultado);}
+                console.log(resultado);
+                window.encuesta = resultado['data'][0];
+            }
             else {throw new Error(response.statusText);}
         } catch (error) {
             console.log("Error al realizar la petición AJAX: " + error.message);
@@ -105,24 +107,26 @@ function leerBDEncuesta(){
     };
 
     enviar();
+
 };
 
 
-
+leerBDEncuesta();
 document.addEventListener("DOMContentLoaded", function() {  // primera carga de DOM 
- /* propuesta de estructura de datos  , guardo la encuesta en Storage para persistencia y comprobar votones  
+ 
+    /* estructura de datos  
         window.encuesta = {
-        "idUsuario": 1, // se fuerza a 1
-        "titulo": vpregunta,
-        "fechaInicio":fechaInicio,
+        "idEncuesta": '', // se fuerza a 1
+        "titulo": '',
+        "fechaInicio":''',
         "fechaFin": fechaFin,
-        "opciones": []
-    }; */
+        "opciones": [] }; */
+    
+     
 
-    leerBDEncuesta();    
+    window.suVoto = false; // ver como se comprueba que ya se ha votado !!
+      
 
-    window.suVoto = false;
-    window.firstTime = true;
     /* Se crea el grupo de botones de votacion
     Debera generar el codigo equivalente a 
     <button type = button class="btn btn-primary" 
@@ -133,13 +137,12 @@ document.addEventListener("DOMContentLoaded", function() {  // primera carga de 
 
     let elSpan = document.createElement("span");
     elSpan.id = "fNombreEncuesta";
-    console.log (encuesta);
-    elSpan.textContent = encuesta['nombre'];
+    console.log (window.encuesta);
+    elSpan.textContent = window.encuesta['titulo'];
     elContenedor.appendChild (elSpan);
 
-    for ( let key in encuesta ) {
-        console.log( encuesta[key] );    
-        if (key != 'nombre') {
+    for ( let key in window.encuesta['opciones'] ) {
+        
             
             // Crea un button
             let button = document.createElement("a");
@@ -153,16 +156,16 @@ document.addEventListener("DOMContentLoaded", function() {  // primera carga de 
                 
                 if( window.suVoto) {
                     if (window.firstTime){
-                    alert("Usted no debería poder votar otra vez, pero lo vamos a dejar para probar la funcionalidad de la APP");
-                    firstTime = false;
-                    }
-                };
-                console.log (e.target.id);
-                var elIdconF = e.target.id;
-                var elId = elIdconF.slice(1);
-                encuesta[elId].vot += 1;
-                refrescaPorcentajes();
-                window.suVoto = true;
+                    alert("Su voto ya ha sido registrado");
+                    
+                } else {
+                    console.log (e.target.id);
+                    var elIdconF = e.target.id;
+                    var elId = elIdconF.slice(1);
+                    encuesta[elId].vot += 1;
+                    refrescaPorcentajes();
+                    window.suVoto = true;
+                }
                             
             };
             document.getElementById("fOpciones").appendChild(button);

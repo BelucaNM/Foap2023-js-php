@@ -18,7 +18,7 @@ function registraBDEncuesta (){
 
     const enviar = async () => {
         try {
-            const response = await fetch('registrBDEncuesta.php', options);
+            const response = await fetch('registraBDEncuesta.php', options);
             if (response.ok) { // Verificar si la respuesta es exitosa
                 const resultado = await response.json();
                 console.log(resultado);}

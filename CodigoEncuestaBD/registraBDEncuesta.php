@@ -2,7 +2,6 @@
 header("Content-type: application/json; charset=utf-8");
 $_POST=json_decode(file_get_contents('php://input'), true);
 
-
 $servername = "localhost";
 $username = "root";
 $password = "";
