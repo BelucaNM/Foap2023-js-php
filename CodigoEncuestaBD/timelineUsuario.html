@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> 
+    <script src="leerBDEncuesta.js"></script>
     <Title > TimelineUsuario </Title>
     <style>
     .conGap{
@@ -51,63 +52,19 @@
 
 function refrescaPorcentajes(){
     let totalVotos = 0; 
-    for ( let key in encuesta ) {
-        console.log( encuesta[key] ); 
-          
-        if (key != 'nombre') {
-            totalVotos += encuesta[key].vot;
-        }};
-    for ( let key in encuesta ) {
-        if (key != 'nombre') {
-            let idSpan = "r" + key;
-            let elSpan = document.getElementById(idSpan)
-            let idSpanValor = Math.round((encuesta[key].vot / totalVotos) * 100);
-            elSpan.innerHTML = encuesta[key].txt + " tiene "+ encuesta[key].vot + " voto, con un "+idSpanValor + "%";
-        }};
-}
+    let opciones = window.encuesta['opciones'];
 
-async function leerBDEncuesta(){
-    console.log ( "Entro en leerBDEncuesta.js")
-    let encuesta = {
-        "id": 3,
-        "idUsuario": "",
-        "titulo": "",
-        "fechaInicio":"",
-        "fechaFin": "",
-        "opciones": []
-        };
-
-    const update = {data:[]};
-    update.data.push(encuesta);
-    console.log(update);
-        
-    dataSon = JSON.stringify(update);
-    console.log (dataSon);
-
-      
-    const options = {
-        method: 'POST',
-        cache: 'no-cache',
-        headers: {'Content-Type': 'application/json',},
-        body: JSON.stringify(update),
-    };
-
+    opciones.forEach ((opcion)=>{
+               totalVotos += opcion['votos'];
+        });
     
-    try {
-            const response = await fetch('leerBDEncuesta.php', options);
-            if (response.ok) { // Verificar si la respuesta es exitosa
-                const resultado = await response.json();
-                console.log(resultado);
-                encuesta = resultado['data'];
-            }
-            else {throw new Error(response.statusText);}
-        } catch (error) {
-            console.log("Error al realizar la petición AJAX: " + error.message);
-        }
-    return encuesta;
+    opciones.forEach ((opcion)=>{
+            let idSpan = "r" + opcion['idOpcion'];
+            let elSpan = document.getElementById(idSpan)
+            let idSpanValor = Math.round((opcion[votos] / totalVotos) * 100);
+            elSpan.innerHTML = opcion['idOpcion'] + " tiene "+ opcion['votos'] + " votos, con un "+idSpanValor + "%";
+        });
 };
-
-
 
 document.addEventListener("DOMContentLoaded", async function() {  // primera carga de DOM 
  
@@ -117,12 +74,12 @@ document.addEventListener("DOMContentLoaded", async function() {  // primera car
         "titulo": '',
         "fechaInicio":''',
         "fechaFin": fechaFin,
-        "opciones": [] }; */
+        "opciones": [], }; */
     
-     
-    window.encuesta = await leerBDEncuesta();
-    window.suVoto = false; // ver como se comprueba que ya se ha votado !!
-      
+    window.user = 1; // soy el  user 1, A obtener de variables de session
+    window.encuesta = await leerBDEncuesta(); // se invocará desde un selector de encuestas activas
+    window.suVoto = false; // no entra en esta pagina si ya ha votado. Impide votar de nuevo aqui
+    
 
     /* Se crea el grupo de botones de votacion
     Debera generar el codigo equivalente a 
@@ -144,13 +101,14 @@ document.addEventListener("DOMContentLoaded", async function() {  // primera car
             
             // Crea un button
             let button = document.createElement("a");
-            button.innerHTML = opcion ['idOpcion'] ;
+            button.innerHTML = opcion ['texto'] ;
             button.classList.add("btn","btn-light","btn-sm");
-            button.id= "f" + key;
-            button.name= "n" + key;
+            button.id= "f" + opcion['idOpcion'];
+            button.name= "n" +opcion['idOpcion'];
             button.type= "button";
             button.classList.add("border", "border-2","border-dark", "conGap");
-            button.onclick = (e)=>{
+
+            button.onclick = (e)=>{ // asigna una funcion al botton
                 
                 if(window.suVoto) {
                     alert("Su voto ya ha sido registrado");
@@ -158,27 +116,25 @@ document.addEventListener("DOMContentLoaded", async function() {  // primera car
                 } else {
                     console.log (e.target.id);
                     var elIdconF = e.target.id;
-                    var elId = elIdconF.slice(1);
-                    window.encuesta[elId].vot += 1;
-                    refrescaPorcentajes();
+                    var elId = elIdconF.slice(1) ;
+                    let elUser = window.user;
+                    let laEncuesta  = window.encuesta;
+                    let laOpcion = window.elId;
+                    registraBDVoto(elUser,laEncuesta,laOpcion);                                       
                     window.suVoto = true;
-                }
-                            
+                    refrescaPorcentajes();
+                };
             };
             document.getElementById("fOpciones").appendChild(button);
 
-            //Crea un campo de resultados
+            //Crea un campo de resultados de voto para esta opcion
             let elSpan = document.createElement("span");
-            elSpan.innerHTML = window.encuesta[key].vot;
-//            elSpan.classList.add("btn","btn-light","btn-sm");
-            elSpan.id= "r" + key;
-            elSpan.name= "k" + key;
-            elSpan.type= "button";
+            elSpan.id= "r" + opcion['idOpcion'];
+            elSpan.name= "k" + opcion['idOpcion'];
             elSpan.classList.add("border-2","puntos");
-            elSpan.innerHTML = encuesta[key].txt;
+            elSpan.innerHTML = opcion['texto']+ " tiene " + opcion['votos']+ " votos";
             
-            document.getElementById("fResultados").appendChild(elSpan);
-
+            document.getElementById("fResultados").appendChild(elSpan);           
 
     });
     

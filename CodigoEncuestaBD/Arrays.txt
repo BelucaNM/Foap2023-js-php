@@ -15,10 +15,10 @@ encuesta = array (
         "titulo"=> vpregunta,
         "fechaInicio"=> fechaInicio,
         "fechaFin"=> fechaFin,
-        "opciones" =>   array ( array ("id"=>1,"opcion"=>"opcion1"),
-                                array ("id"=>2,"opcion"=>"opcion2"),    
-                                array ("id"=>3,"opcion"=>"opcion3"),
-                                array ("id"=>4,"opcion"=>"opcion4"),
+        "opciones" =>   array ( array ("id"=>1,"opcion"=>"opcion1","votos"=>0),
+                                array ("id"=>2,"opcion"=>"opcion2","votos"=>0),    
+                                array ("id"=>3,"opcion"=>"opcion3","votos"=>0),
+                                array ("id"=>4,"opcion"=>"opcion4","votos"=>0),
                                 ),
                 );
 JSON

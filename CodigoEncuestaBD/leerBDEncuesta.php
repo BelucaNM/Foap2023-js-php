@@ -1,7 +1,7 @@
+
 <?php
 header("Content-type: application/json; charset=utf-8");
-$_POST=json_decode(file_get_contents('php://input'), true);
-
+ $_POST=json_decode(file_get_contents('php://input'), true);
 
 $servername = "localhost";
 $username = "root";
@@ -15,6 +15,14 @@ if ($conn->connect_error) {// Check connection
 }else{
     
     $update = $_POST['data'][0];
+/*  $update = array (
+        "id"=>3,
+        "idUsuario"=> "", 
+        "titulo"=> "",
+        "fechaInicio"=> "",
+        "fechaFin"=> "",
+        "opciones" =>   array ( ),
+                ); */
 
     $id = $update['id'];
 
@@ -28,18 +36,30 @@ if ($conn->connect_error) {// Check connection
     $update['fechaFin'] = $datos['fechaFin'];
     $update['opciones'] = [];
 
-    // select opciones
-    $update ['opciones'] =[];
+    
+    $update ['opciones'] =[]; // select opciones
     $sql ="SELECT idOpcion, texto  FROM opciones as o WHERE o.idEncuesta = $id;"; 
     $result = $conn->query($sql);
+//    print_r ($result);
     while($row = $result->fetch_assoc()) {
-        $update['opciones'][] = $row;};
+//        print_r ($row);
+        $idOpcion = $row ['idOpcion'];
+        $sql ="SELECT SUM(r.idEncuesta = $id and r.idOpcion= $idOpcion) FROM respuestas as r;" ;
+//        echo ($sql); 
+        $result1 = $conn->query($sql);
+        
+        $row1 = mysqli_fetch_row($result1);
+        $sum = $row1[0];
+//        echo ($sum);
+        $row += array('votos'=>$sum);
+        $update['opciones'][] = $row; 
+    };
+};
 
     $encuesta=array('data'=>$update);
-        
     $conn->close(); 
+
     echo json_encode($encuesta);
-    
-};
+?>
 
      
