@@ -66,10 +66,10 @@ function refrescaPorcentajes(){
         }};
 }
 
-function leerBDEncuesta(){
+async function leerBDEncuesta(){
     console.log ( "Entro en leerBDEncuesta.js")
-    window.encuesta = {
-        "id": 1,
+    let encuesta = {
+        "id": 3,
         "idUsuario": "",
         "titulo": "",
         "fechaInicio":"",
@@ -78,7 +78,7 @@ function leerBDEncuesta(){
         };
 
     const update = {data:[]};
-    update.data.push(window.encuesta);
+    update.data.push(encuesta);
     console.log(update);
         
     dataSon = JSON.stringify(update);
@@ -92,38 +92,35 @@ function leerBDEncuesta(){
         body: JSON.stringify(update),
     };
 
-    const enviar = async () => {
-        try {
+    
+    try {
             const response = await fetch('leerBDEncuesta.php', options);
             if (response.ok) { // Verificar si la respuesta es exitosa
                 const resultado = await response.json();
                 console.log(resultado);
-                window.encuesta = resultado['data'][0];
+                encuesta = resultado['data'];
             }
             else {throw new Error(response.statusText);}
         } catch (error) {
             console.log("Error al realizar la petición AJAX: " + error.message);
         }
-    };
-
-    enviar();
-
+    return encuesta;
 };
 
 
-leerBDEncuesta();
-document.addEventListener("DOMContentLoaded", function() {  // primera carga de DOM 
+
+document.addEventListener("DOMContentLoaded", async function() {  // primera carga de DOM 
  
     /* estructura de datos  
-        window.encuesta = {
-        "idEncuesta": '', // se fuerza a 1
+        encuesta = {
+        "idEncuesta": '', // se fuerza a 3
         "titulo": '',
         "fechaInicio":''',
         "fechaFin": fechaFin,
         "opciones": [] }; */
     
      
-
+    window.encuesta = await leerBDEncuesta();
     window.suVoto = false; // ver como se comprueba que ya se ha votado !!
       
 
@@ -137,16 +134,17 @@ document.addEventListener("DOMContentLoaded", function() {  // primera carga de 
 
     let elSpan = document.createElement("span");
     elSpan.id = "fNombreEncuesta";
-    console.log (window.encuesta);
-    elSpan.textContent = window.encuesta['titulo'];
+    console.log ( window.encuesta);
+    elSpan.textContent =  window.encuesta['titulo'];
     elContenedor.appendChild (elSpan);
 
-    for ( let key in window.encuesta['opciones'] ) {
+    let opciones = window.encuesta['opciones'];
+    opciones.forEach(function(opcion,index) {
         
             
             // Crea un button
             let button = document.createElement("a");
-            button.innerHTML = encuesta[key].txt;
+            button.innerHTML = opcion ['idOpcion'] ;
             button.classList.add("btn","btn-light","btn-sm");
             button.id= "f" + key;
             button.name= "n" + key;
@@ -154,15 +152,14 @@ document.addEventListener("DOMContentLoaded", function() {  // primera carga de 
             button.classList.add("border", "border-2","border-dark", "conGap");
             button.onclick = (e)=>{
                 
-                if( window.suVoto) {
-                    if (window.firstTime){
+                if(window.suVoto) {
                     alert("Su voto ya ha sido registrado");
-                    
+                    return     
                 } else {
                     console.log (e.target.id);
                     var elIdconF = e.target.id;
                     var elId = elIdconF.slice(1);
-                    encuesta[elId].vot += 1;
+                    window.encuesta[elId].vot += 1;
                     refrescaPorcentajes();
                     window.suVoto = true;
                 }
@@ -172,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function() {  // primera carga de 
 
             //Crea un campo de resultados
             let elSpan = document.createElement("span");
-            elSpan.innerHTML = encuesta[key].vot;
+            elSpan.innerHTML = window.encuesta[key].vot;
 //            elSpan.classList.add("btn","btn-light","btn-sm");
             elSpan.id= "r" + key;
             elSpan.name= "k" + key;
@@ -183,8 +180,8 @@ document.addEventListener("DOMContentLoaded", function() {  // primera carga de 
             document.getElementById("fResultados").appendChild(elSpan);
 
 
-    };
-    };
+    });
+    
 });
 
     </script>

@@ -51,14 +51,12 @@ if ($conn->connect_error) {// Check connection
         
     
         if ($result === TRUE) {
-            $messageObj['message'] =  "New records created successfully";       
-            echo json_encode($messageObj);
+            $messageObj['message'] =  "New records created successfully"; 
+            
         } else {
             $messageObj['message'] =  "Error"; 
-            echo json_encode($messageObj);
         };
-    };
-
-    $conn->close();      
-    
+        $conn->close();       
+        echo json_encode($messageObj);
+    };    
 };

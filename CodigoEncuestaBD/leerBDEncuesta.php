@@ -17,6 +17,7 @@ if ($conn->connect_error) {// Check connection
     $update = $_POST['data'][0];
 
     $id = $update['id'];
+
     // datos encuesta
     $sql ="SELECT idUsuario, titulo, fechaInicio, fechaFin  FROM encuestas as e WHERE e.id = $id;"; 
     $result = $conn->query($sql);
@@ -29,7 +30,7 @@ if ($conn->connect_error) {// Check connection
 
     // select opciones
     $update ['opciones'] =[];
-    $sql ="SELECT idOpcion, texto  FROM opciones as o WHERE e.idEncuesta = $id;"; 
+    $sql ="SELECT idOpcion, texto  FROM opciones as o WHERE o.idEncuesta = $id;"; 
     $result = $conn->query($sql);
     while($row = $result->fetch_assoc()) {
         $update['opciones'][] = $row;};
