@@ -25,22 +25,33 @@ if ($conn->connect_error) {// Check connection
     $stmt = $conn->prepare("INSERT INTO respuestas(idVotante,idEncuesta, idOpcion, fechaVoto) VALUES (?, ?, ?, ?);");
     
     $id = "";
-    $idUsuario = $update['idUsuario'];
-    $idEncuesta = $update['idEncuesta'];
-    $idOpcion =  $update['idOpcion'];
-    $fechaVoto = $update['fechaVoto'];
+    $idUsuario = $update[0]['idUsuario'];
+    $idEncuesta = $update[0]['idEncuesta'];
+    $idOpcion =  $update[0]['idOpcion'];
+    $fechaVoto = $update[0]['fechaVoto'];
 
     $stmt->bind_param("ssss", $idUsuario, $idEncuesta, $idOpcion, $fechaVoto);
-    $stmt->execute();
+    try{
+        if ($stmt->execute())
+        {
+            $messageObj['message'] =  "New records created successfully"; 
+          
+        }
+       
+    }catch (mysqli_sql_exception $e) {
 
-        
-    $result = $conn->query("COMMIT;");
-    if ($result === TRUE) {
-        $messageObj['message'] =  "New records created successfully"; 
-    } else {
         $messageObj['message'] =  "Error"; 
+        if ($e->getCode() == 1062)
+        {
+
+        $messageObj['message'] =  "Registro duplicado"; 
+        
+        }
+
+    } finally {
+        $conn->close(); 
+        echo json_encode($messageObj);
     };
-    $conn->close();       
-    echo json_encode($messageObj);
+    
         
 };

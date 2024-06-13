@@ -55,14 +55,18 @@ function refrescaPorcentajes(){
     let opciones = window.encuesta['opciones'];
 
     opciones.forEach ((opcion)=>{
-               totalVotos += opcion['votos'];
+               totalVotos += parseInt(opcion['votos']);
         });
     
     opciones.forEach ((opcion)=>{
             let idSpan = "r" + opcion['idOpcion'];
             let elSpan = document.getElementById(idSpan)
-            let idSpanValor = Math.round((opcion[votos] / totalVotos) * 100);
-            elSpan.innerHTML = opcion['idOpcion'] + " tiene "+ opcion['votos'] + " votos, con un "+idSpanValor + "%";
+            if (totalVotos  != 0 ) {
+                let idSpanValor = Math.round((parseInt(opcion['votos']) / totalVotos) * 100);
+            } else {
+                let idSpanValor = 0;
+            elSpan.innerHTML = opcion['texto'] + " tiene "+ opcion['votos'] + " votos, con un "+idSpanValor + "%";
+             };
         });
 };
 
@@ -76,8 +80,9 @@ document.addEventListener("DOMContentLoaded", async function() {  // primera car
         "fechaFin": fechaFin,
         "opciones": [], }; */
     
-    window.user = 1; // soy el  user 1, A obtener de variables de session
+    window.user = 5; // soy el  user 5, A obtener de variables de session
     window.encuesta = await leerBDEncuesta(); // se invocará desde un selector de encuestas activas
+    window.idEncuesta = window.encuesta['id'];
     window.suVoto = false; // no entra en esta pagina si ya ha votado. Impide votar de nuevo aqui
     
 
@@ -110,20 +115,22 @@ document.addEventListener("DOMContentLoaded", async function() {  // primera car
 
             button.onclick = (e)=>{ // asigna una funcion al botton
                 
-                if(window.suVoto) {
-                    alert("Su voto ya ha sido registrado");
+/*                if(window.suVoto) {
+                    alert("Su voto ya había sido registrado");
                     return     
-                } else {
+                } else { 
+*/
                     console.log (e.target.id);
                     var elIdconF = e.target.id;
-                    var elId = elIdconF.slice(1) ;
+                    var laOpcion = elIdconF.slice(1) ;
                     let elUser = window.user;
-                    let laEncuesta  = window.encuesta;
-                    let laOpcion = window.elId;
-                    registraBDVoto(elUser,laEncuesta,laOpcion);                                       
+                    let laEncuesta  = window.idEncuesta;
+                    
+                    registraBDVoto(elUser,laEncuesta,laOpcion);
                     window.suVoto = true;
                     refrescaPorcentajes();
-                };
+                    alert ("Su voto se ha registrado adecuadamente!!"); 
+//                };
             };
             document.getElementById("fOpciones").appendChild(button);
 

@@ -1,7 +1,7 @@
 async function leerBDEncuesta(){
     console.log ( "Entro en leerBDEncuesta.js")
     let encuesta = {
-        "id": 3,
+        "id": 11,
         "idUsuario": "",
         "titulo": "",
         "fechaInicio":"",
@@ -51,15 +51,15 @@ async function registraBDVoto( idUsuario,idEncuesta,idOpcion){
             "fechaVoto":fechaVoto 
             };
     
-        const update = {data:[]};
-        update.data.push(voto);
-        console.log(update);
+    const update = {data:[]};
+    update.data.push(voto);
+    console.log(update);
             
-        dataSon = JSON.stringify(update);
-        console.log (dataSon);
+    dataSon = JSON.stringify(update);
+    console.log (dataSon);
     
           
-        const options = {
+    const options = {
             method: 'POST',
             cache: 'no-cache',
             headers: {'Content-Type': 'application/json',},
@@ -67,7 +67,7 @@ async function registraBDVoto( idUsuario,idEncuesta,idOpcion){
         };
     
         
-        try {
+    try {
                 const response = await fetch('registraBDvoto.php', options);
                 if (response.ok) { // Verificar si la respuesta es exitosa
                     const resultado = await response.json();
