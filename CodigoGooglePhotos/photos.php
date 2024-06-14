@@ -28,7 +28,7 @@
 
     $title ="Bienvenido a PHOTOS";
     include ("header.php");
-    include ("funciones.php");
+    include "funciones.php";
     
     $photos = obtener_photos($idUsuario); // busca mensajes del user y de sus subscriptores
 

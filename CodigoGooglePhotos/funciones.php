@@ -168,6 +168,22 @@ function fdmaAfamd($fecha_dma){
     return $fecha_amd;
 }; 
 
-function obtener_photos($idUsuario){
+function obtener_photos($arrayUsers){
 
+    if (!empty($arrayUsers))  {  // puede ser un único user
+    
+    //    print_r($arrayUsers);
+        include 'conn_BD.php'; // conexion a BD
+        $sql ="SELECT photos *, personas.username  as username,
+                    FROM photos 
+                    JOIN
+                    personas ON photos.iduser = personas.id 
+                    WHERE personas.id IN (".implode(',',$arrayUsers).") ORDER BY photos.fecha DESC";
+    //    print ($sql);
+        $result = $conn->query($sql);
+        include 'connClose_BD.php'; // cierra conexion a BD
+        return $result;
+    }else{ 
+        return null;
+    };
 };
