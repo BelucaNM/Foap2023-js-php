@@ -110,7 +110,7 @@ function existe_User($username, $password)
     return $id;
 };
 
-function alta_personas($dni, $nombre, $apellido, $fechaNacimiento, $telefono, $idLocalidad, $idEmpresa, $email, $username, $password)
+function alta_personas($dni, $nombre, $apellido, $fechaNacimiento, $telefono, $idLocalidad, $email, $username, $password)
 {
 
     include 'conn_BD.php'; // conexion a BD
@@ -172,18 +172,39 @@ function obtener_photos($arrayUsers){
 
     if (!empty($arrayUsers))  {  // puede ser un único user
     
-    //    print_r($arrayUsers);
+    //  print_r($arrayUsers);
         include 'conn_BD.php'; // conexion a BD
-        $sql ="SELECT photos *, personas.username  as username,
-                    FROM photos 
+        $usuarios = implode(',',$arrayUsers);
+        $sql ="SELECT photos.*, personas.username  as username
+                    FROM photos
                     JOIN
-                    personas ON photos.iduser = personas.id 
-                    WHERE personas.id IN (".implode(',',$arrayUsers).") ORDER BY photos.fecha DESC";
-    //    print ($sql);
+                    personas  ON photos.idPropietario = personas.id 
+                    WHERE personas.id IN ($usuarios) ORDER BY photos.fechaFotografia DESC;";
+    //  print ($sql);
         $result = $conn->query($sql);
         include 'connClose_BD.php'; // cierra conexion a BD
         return $result;
     }else{ 
         return null;
     };
+};
+
+function alta_photo($idUsuario,$nombre,$album,$imagen){
+    include 'conn_BD.php'; // conexion a BD
+    $error = false;
+    $hoy = new DateTime('now');
+    $strHoy= $hoy->format("Y/m/d H:i");
+    
+    $sql = "INSERT  INTO photos (idPropietario, nombre, url, fechaRegistroBD, album) 
+                        VALUES ($idUsuario,'$nombre','$imagen', '$strHoy','$album');";
+
+    
+    echo $sql;
+    $result= $conn->query($sql);
+//    $result= mysqli_query($conn,$sql); 
+    echo $result;
+    if ($result != 1) { $error = true; };
+    include 'connClose_BD.php'; // cierra conexion a BD
+    return $error;
+
 };
