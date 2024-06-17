@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `fotos`
+-- Estructura de tabla para la tabla `photos`
 --
 
-CREATE TABLE `fotos` (
+CREATE TABLE `photos` (
   `id` int(11) NOT NULL,
   `idPropietario` int(11) NOT NULL,
   `nombre` varchar(30) NOT NULL,
@@ -14268,9 +14268,9 @@ INSERT INTO `personas` (`id`, `dni`, `nombre`, `apellido`, `fechaNacimiento`, `t
 --
 
 --
--- Indices de la tabla `fotos`
+-- Indices de la tabla `photos`
 --
-ALTER TABLE `fotos`
+ALTER TABLE `photos`
   ADD PRIMARY KEY (`id`),
   ADD KEY `iPropietario` (`idPropietario`);
 
@@ -14293,9 +14293,9 @@ ALTER TABLE `personas`
 --
 
 --
--- AUTO_INCREMENT de la tabla `fotos`
+-- AUTO_INCREMENT de la tabla `photos`
 --
-ALTER TABLE `fotos`
+ALTER TABLE `photos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -14315,9 +14315,9 @@ ALTER TABLE `personas`
 --
 
 --
--- Filtros para la tabla `fotos`
+-- Filtros para la tabla `photos`
 --
-ALTER TABLE `fotos`
+ALTER TABLE `photos`
   ADD CONSTRAINT `rPropietario` FOREIGN KEY (`idPropietario`) REFERENCES `personas` (`id`);
 
 --
