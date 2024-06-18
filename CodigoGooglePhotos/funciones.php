@@ -168,26 +168,6 @@ function fdmaAfamd($fecha_dma){
     return $fecha_amd;
 }; 
 
-function obtener_photos($arrayUsers){
-
-    if (!empty($arrayUsers))  {  // puede ser un único user
-    
-    //  print_r($arrayUsers);
-        include 'conn_BD.php'; // conexion a BD
-        $usuarios = implode(',',$arrayUsers);
-        $sql ="SELECT photos.*, personas.username  as username
-                    FROM photos
-                    JOIN
-                    personas  ON photos.idPropietario = personas.id 
-                    WHERE personas.id IN ($usuarios) ORDER BY photos.fechaFotografia DESC;";
-    //  print ($sql);
-        $result = $conn->query($sql);
-        include 'connClose_BD.php'; // cierra conexion a BD
-        return $result;
-    }else{ 
-        return null;
-    };
-};
 
 function alta_photo($idUsuario,$nombre,$album,$imagen){
 //  Metadatos Foto 
@@ -214,6 +194,27 @@ function alta_photo($idUsuario,$nombre,$album,$imagen){
     include 'connClose_BD.php'; // cierra conexion a BD
     return $error;
 
+};
+
+function obtener_photos($arrayUsers){
+
+    if (!empty($arrayUsers))  {  // puede ser un único user
+    
+    //  print_r($arrayUsers);
+        include 'conn_BD.php'; // conexion a BD
+        $usuarios = implode(',',$arrayUsers);
+        $sql ="SELECT photos.*, personas.username  as username
+                    FROM photos
+                    JOIN
+                    personas  ON photos.idPropietario = personas.id 
+                    WHERE personas.id IN ($usuarios) ORDER BY photos.fechaFotografia DESC;";
+    //  print ($sql);
+        $result = $conn->query($sql);
+        include 'connClose_BD.php'; // cierra conexion a BD
+        return $result;
+    }else{ 
+        return null;
+    };
 };
 
 
@@ -243,3 +244,8 @@ function gps2Num($coordPart) {
 
     return floatval($parts[0]) / floatval($parts[1]);
 };
+
+function verDetalles() {
+
+};
+

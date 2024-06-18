@@ -26,7 +26,7 @@
         header ("location:formLogin.php ");
     };
 
-    $title ="Bienvenido a PHOTOS";
+    $title ="Bienvenido a la GALERIA";
     include ("header.php");
     include "funciones.php";
     $usuarios = [$idUsuario];
@@ -42,6 +42,7 @@
     <p name=" usuario"><strong>HOLA <?=$usuario;?> !</strong></p>
     <div class = "btn-group btn-group-sm">        
         <a type="button" class="btn btn-dark" href="logOut.php">Log Out</a>
+        <a type="button" class="btn btn-light" href="verEnMapa.html">Ver en el Mapa</a>
         <a type="button" class="btn btn-light" href='uploadImage.php' >Subir photo</a>
     </div>
     <div class = "btn-group btn-group-sm">
@@ -56,19 +57,20 @@
     if ($photos->num_rows > 0) {
         // output data of each row
             while($row = $photos->fetch_assoc()) {
-    //            print_r($row);
+//                print_r($row);
                 
     ?>
-               
                 
 <!--           <div class="card-header"></div>  -->
                <div class="grid-item bg-light">
-                   <img class="card-img-top" src="<?=$row['url'];?>" alt="<?=$row['nombre'];?>" height="250" />
+                   <img class="card-img-top" src="<?=$row['url'];?>" alt="<?=$row['nombre'];?>"/>
                     <h4 class = "card-title"><?= $row["nombre"]; ?></h4>
                     <p class  = "card-text">Cortesia de:<?= $row["username"]; ?></p> 
                     <p class  = "card-text">Fecha de Registro:<?= $row["fechaRegistroBD"]; ?></p> 
                     <p class  = "card-text">Fecha de la Fotografía:<?= $row["fechaFotografia"]; ?></p> 
-                    <p class  = "card-text">Ubicación:<?= $row["ubicacion"];?></p>                        
+                    <p class  = "card-text">Ubicación:<?= $row["ubicacion"];?></p> 
+                    <a type="button" class="btn btn-dark" href="verDetalles.php?id=<?= $row["id"];?>">Ver detalles</a>
+                                         
                 </div>
 <!--            <div class="card-footer"></div> -->
                 

@@ -15,7 +15,7 @@
 <body>
    <?php
    session_start();
-   $title ="UploadImage en PHOTOS";
+   $title ="UploadImage a PHOTOS";
    include ("header.php");
    include_once "funciones.php";
 
@@ -99,7 +99,7 @@
                     
 
                     // crea un link en la pagina
-                    echo "<h3> Hola " . $targetImage . " </h3>";
+                    echo "<h3>". $targetImage ."</h3>";
                     echo "<p> <a href='" . $targetImage . "' target= '_blank'>Abrir fichero</a></p>";
                     echo "<p> <a href='downloadFile.php?file=" . $targetImage . "'>Descargar fichero</a></p>";
                     
@@ -123,15 +123,20 @@
     <div class="row">
     <div class="col-3"></div>
     <div class="col-6">
-    <div>
-        <a type="button" class="btn btn-dark" href="photos.php">Galeria de Photos</a>
-        <a type="button" class="btn btn-dark" href="logOut.php">Log Out</a>
+    <
+    <div  id="subirImagen" class = "container pt-3 pb-3 mt-3 bg-light shadow-lg">
+        <div class = "btn-group btn-group-sm"> 
+            <a type="button" class="btn btn-dark" href="logOut.php">Log Out</a>
+            <a type="button" class="btn btn-light" href="photos.php">Galeria de Photos</a>
+        </div>
+        <br><br>
         <form action="" method="post" enctype="multipart/form-data">
-            <label> Subir al Album : </label>
-            <input type="text" name="album"  id="elAlbum" size = 50 placeholder="introducir el nombre del album destino"> <br>
+            <label for "elAlbum"> Subir al Album : </label> <br>
+            <input type="text" name="album"  id="elAlbum"  size = 50 placeholder="introducir un nombre para el album "> <br>
             <input type="text" name="nombre" id="elNombre" size = 50 placeholder="introducir un nombre para la foto"> <br>
             <br><br>
-            <input type="file" name="imagen" id="laImagen" placeholder="introducir el nombre de la imagen">
+            <label for "laImagen"> Introducir el nombre de la imagen : </label> <br>
+            <input type="file" name="imagen" id="laImagen" size = 100 >
             <input type="hidden" name"MAX_FILE_SIZE" value="102400">
             <input type="submit" name="submit" VALUE="aceptar">
         </form>
