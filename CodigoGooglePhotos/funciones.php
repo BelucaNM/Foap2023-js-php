@@ -190,13 +190,20 @@ function obtener_photos($arrayUsers){
 };
 
 function alta_photo($idUsuario,$nombre,$album,$imagen){
+//  Metadatos Foto 
+    $metaData = exif_read_data($imagen, 0, true);
+    $fechaFotografia = date("Y-m-d H:i:s", strtotime($metaData['GPS']['GPSDateStamp']));
+    $longitude = gpsToFloat($metaData['GPS']['GPSLongitude'], $metaData['GPS']['GPSLongitudeRef']);
+    $latitude = gpsToFloat($metaData['GPS']['GPSLatitude'], $metaData['GPS']['GPSLatitudeRef']);    
+
+
     include 'conn_BD.php'; // conexion a BD
     $error = false;
     $hoy = new DateTime('now');
     $strHoy= $hoy->format("Y/m/d H:i");
     
-    $sql = "INSERT  INTO photos (idPropietario, nombre, url, fechaRegistroBD, album) 
-                        VALUES ($idUsuario,'$nombre','$imagen', '$strHoy','$album');";
+    $sql = "INSERT  INTO photos (idPropietario, nombre, url, fechaRegistroBD, fechaFotografia,ubicacion, album) 
+                        VALUES ($idUsuario,'$nombre','$imagen', '$strHoy','$fechaFotografia',POINT('$longitude','$latitude'),'$album');";
 
     
     echo $sql;
@@ -207,4 +214,32 @@ function alta_photo($idUsuario,$nombre,$album,$imagen){
     include 'connClose_BD.php'; // cierra conexion a BD
     return $error;
 
+};
+
+
+    // Function to convert GPS coordinates from EXIF data to float
+function gpsToFloat($gps, $hemisphere) {
+        // Degrees, minutes, seconds
+        $d = count($gps) > 0 ? gps2Num($gps[0]) : 0;
+        $m = count($gps) > 1 ? gps2Num($gps[1]) : 0;
+        $s = count($gps) > 2 ? gps2Num($gps[2]) : 0;
+
+        $float = $d + ($m / 60) + ($s / 3600);
+
+        // If the hemisphere is South or West, make the float negative
+        if ($hemisphere == 'S' || $hemisphere == 'W') {
+            $float = -$float;
+        }
+
+        return $float;
+};
+function gps2Num($coordPart) {
+    $parts = explode('/', $coordPart);
+    if (count($parts) <= 0)
+        return 0;
+
+    if (count($parts) == 1)
+        return $parts[0];
+
+    return floatval($parts[0]) / floatval($parts[1]);
 };
