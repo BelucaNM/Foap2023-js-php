@@ -198,7 +198,7 @@ function obtener_photos($arrayUsers){
 //      print_r($arrayUsers);
         include 'conn_BD.php'; // conexion a BD
         $usuarios = implode(',',$arrayUsers);
-        $sql ="SELECT p.*, ST_X(p.ubicacion) as latitude,ST_Y(p.ubicacion) as longitude, personas.username  as username
+        $sql ="SELECT p.*, ST_X(p.ubicacion) as longitude ,ST_Y(p.ubicacion) as latitude, personas.username  as username
                     FROM photos as p
                     JOIN
                     personas  ON p.idPropietario = personas.id 

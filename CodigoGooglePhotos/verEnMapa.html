@@ -15,6 +15,7 @@
     
     <h3>Simple Leaflet Map with markers fetched from a JSON</h3>
     <!-- The div element for the map -->
+    <a type="button" class="btn btn-light" href="photos.php">Galeria de Photos</a>
     <div id="map"></div>
     <script>
         // Initialize the map and set its view to a given location and zoom level
@@ -26,6 +27,7 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+//       fetch('./coordinates.json')
         fetch('./fotos-json.php')
             .then(response => response.json())
             .then(data => {
@@ -33,15 +35,30 @@
                     // Add a small html to the popup with a picture and a link to Google Maps
                     if ((element.latitude != null ) && (element.longitude != null)) {
 
-                        var popup = "<b>" + element.name + "</b><br>" +
-                            "<a href='https://www.google.com/maps/search/?api=1&query=" + element.latitude + "," + element.longitude + "' target='_blank'>Google Maps</a>";
+                        var popup = 
+                        "<b>" + element.nombre + "</b><br>" +
+                        "<img src="+ element.url + " alt="+ element.nombre + "width='50' height='60'/><br>" +
+                        "<a href='https://www.google.com/maps/search/?api=1&query=" + element.latitude + "," + element.longitude + "' target='_blank'>Google Maps</a>";
                         
                         // Add a marker to the map
+                        var elPopup ='<img src='+ element.url + ' alt='+ element.nombre + '/>';
                         L.marker([element.latitude, element.longitude]).addTo(map)
                             .bindPopup(popup);
                         };
+                        //Add an image to the map
+                        var imageUrl = element.url;
+                        var errorOverlayUrl = '';
+                        var altText = element.alt;
+                        var latLngBounds = L.latLngBounds([[element.latitude, element.longitude]]);
+
+                        L.imageOverlay(imageUrl, latLngBounds, {
+                            opacity: 0.8,
+                            errorOverlayUrl: errorOverlayUrl,
+                            alt: altText,
+                            interactive: true
+                             }).addTo(map);
+                });
             });
-        });
 
         
     </script>

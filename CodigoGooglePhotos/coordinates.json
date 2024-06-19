@@ -1,0 +1,54 @@
+[
+    {
+        "id":"5",
+        "idPropietario":"6",
+        "nombre":"PruebaUbicacion",
+        "url":".\/imgApp\/IMG_20240618_125214108.jpg",
+        "fechaRegistroBD":"2024-06-18 13:48:00",
+        "fechaFotografia":"1970-01-01 01:00:00",
+        "ubicacion":"",
+        "album":"Foap2023",
+        "latitude":"41.223126972222",
+        "longitude":"1.7361019722222",
+        "username":"beluFoap"
+    },
+    {
+        "id":"1",
+        "idPropietario":"6",
+        "nombre":"foto1",
+        "url":".\/imgApp\/bob-brewer-dbK1lncRcWk-unsplash.jpg",
+        "fechaRegistroBD":"2024-06-17 00:00:00",
+        "fechaFotografia":"0000-00-00 00:00:00",
+        "ubicacion":"",
+        "album":"Foap2023",
+        "latitude":"41.223190",
+        "longitude":"1.723490",
+        "username":"beluFoap"
+    },
+    {
+        "id":"2",
+        "idPropietario":"6",
+        "nombre":"foto5",
+        "url":".\/imgApp\/maureen-eijpe-ymXfdg_37nA-unsplash.jpg",
+        "fechaRegistroBD":"2024-06-17 13:02:00",
+        "fechaFotografia":"0000-00-00 00:00:00",
+        "ubicacion":"",
+        "album":"Foap2023",
+        "latitude":"41.2166502",
+        "longitude":"1.657691",
+        "username":"beluFoap"
+    },
+    {
+        "id":"3",
+        "idPropietario":"6",
+        "nombre":"foto1",
+        "url":".\/imgApp\/batuhan-dogan-dNMttFMU_hI-unsplash.jpg",
+        "fechaRegistroBD":"2024-06-17 13:12:00",
+        "fechaFotografia":"0000-00-00 00:00:00",
+        "ubicacion":"",
+        "album":"Foap2023",
+        "latitude":"41.19460579565834",
+        "longitude":"1.6268052731008484",
+        "username":"beluFoap"
+    }
+]
