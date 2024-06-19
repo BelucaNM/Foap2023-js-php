@@ -57,19 +57,28 @@
     if ($photos->num_rows > 0) {
         // output data of each row
             while($row = $photos->fetch_assoc()) {
-//                print_r($row);
-                
+//              print_r($row)
+                               
     ?>
                 
 <!--           <div class="card-header"></div>  -->
-               <div class="grid-item bg-light">
-                   <img class="card-img-top" src="<?=$row['url'];?>" alt="<?=$row['nombre'];?>"/>
+               <div class="grid-item bg-light text-start">
                     <h4 class = "card-title"><?= $row["nombre"]; ?></h4>
+                    <img class="card-img-top" src="<?=$row['url'];?>" alt="<?=$row['nombre'];?>"/>
+                    <a type="button" class="btn btn-link" href="verDetalles.php?id=<?= $row["id"];?>">Ver + detalles</a>
+                    
                     <p class  = "card-text">Cortesia de:<?= $row["username"]; ?></p> 
                     <p class  = "card-text">Fecha de Registro:<?= $row["fechaRegistroBD"]; ?></p> 
                     <p class  = "card-text">Fecha de la Fotografía:<?= $row["fechaFotografia"]; ?></p> 
-                    <p class  = "card-text">Ubicación:<?= $row["ubicacion"];?></p> 
-                    <a type="button" class="btn btn-dark" href="verDetalles.php?id=<?= $row["id"];?>">Ver detalles</a>
+<?php
+if ($row["longitude"] != null){
+?>
+    
+                    <p class  = "card-text">Ubicación:[<?= $row['longitude' ];?>,<?= $row['latitude' ];?>]</p> 
+<?php
+};
+?>
+                    
                                          
                 </div>
 <!--            <div class="card-footer"></div> -->

@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title> Subir Photos </title>
+    <title> Upload Image </title>
     <meta charset="UTF-8">
     <meta description="Basecon favicon">
     <link rel="shortcut icon" href=".\imgCodigo\favicon.png">
@@ -131,14 +131,14 @@
         </div>
         <br><br>
         <form action="" method="post" enctype="multipart/form-data">
-            <label for "elAlbum"> Subir al Album : </label> <br>
-            <input type="text" name="album"  id="elAlbum"  size = 50 placeholder="introducir un nombre para el album "> <br>
-            <input type="text" name="nombre" id="elNombre" size = 50 placeholder="introducir un nombre para la foto"> <br>
+            <label for="idAlbum" class="form-check-label"> Subir al Album : </label> <br>
+            <input type="text" class="form-control" name="album"  id="idAlbum"  maxlength= "50" placeholder="Nombre para el album "> <br>
+            <input type="text" class="form-control" name="nombre" id="idNombre" maxlength= "50" placeholder="Nombre para la foto"> <br>
             <br><br>
-            <label for "laImagen"> Introducir el nombre de la imagen : </label> <br>
-            <input type="file" name="imagen" id="laImagen" size = 100 >
-            <input type="hidden" name"MAX_FILE_SIZE" value="102400">
-            <input type="submit" name="submit" VALUE="aceptar">
+            <label for="idImagen" class="form-check-label"> Introducir el nombre de la imagen : </label> <br>
+            <input type="file" class="form-control" name="imagen" id="idImagen" maxlength = "100" >
+            <input type="hidden" name="MAX_FILE_SIZE" value="102400">
+            <input type="submit" class="btn btn-light text-dark" name="submit" VALUE="Aceptar">
         </form>
     </div>
     </div>

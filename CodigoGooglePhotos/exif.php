@@ -21,8 +21,8 @@
     }
     
     // get url parameter
-    $file = $_GET['file'];
-//    $file = 'C:\\Users\\Foap2023\\Desktop\\FotosParaPruebas\\IMG_20240618_125214108.jpg';
+//    $file = $_GET['file'];
+    $file = 'C:\\Users\\administrador\\Desktop\\FotosParaPruebas\\IMG_20240618_125214108.jpg';
     $data = get_exif_data($file);
     
     header('Content-Type: application/json');

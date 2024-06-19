@@ -125,12 +125,7 @@ function alta_personas($dni, $nombre, $apellido, $fechaNacimiento, $telefono, $i
     } else {
         $sql .= "'$idLocalidad',";
     }
-    if ($idEmpresa == "") {
-        $sql .= "NULL,";
-    } else {
-        $sql .= "'$idEmpresa',";
-    }
-
+    
     $sql .= "'$email','$username','$password');";
 
     echo $sql;
@@ -172,7 +167,7 @@ function fdmaAfamd($fecha_dma){
 function alta_photo($idUsuario,$nombre,$album,$imagen){
 //  Metadatos Foto 
     $metaData = exif_read_data($imagen, 0, true);
-    $fechaFotografia = date("Y-m-d H:i:s", strtotime($metaData['GPS']['GPSDateStamp']));
+    $fechaFotografia = date("Y-m-d H:i:s", strtotime($metaData['EXIF']['DateTimeOriginal']));
     $longitude = gpsToFloat($metaData['GPS']['GPSLongitude'], $metaData['GPS']['GPSLongitudeRef']);
     $latitude = gpsToFloat($metaData['GPS']['GPSLatitude'], $metaData['GPS']['GPSLatitudeRef']);    
 
@@ -200,15 +195,15 @@ function obtener_photos($arrayUsers){
 
     if (!empty($arrayUsers))  {  // puede ser un único user
     
-    //  print_r($arrayUsers);
+//      print_r($arrayUsers);
         include 'conn_BD.php'; // conexion a BD
         $usuarios = implode(',',$arrayUsers);
-        $sql ="SELECT photos.*, personas.username  as username
-                    FROM photos
+        $sql ="SELECT p.*, ST_X(p.ubicacion) as latitude,ST_Y(p.ubicacion) as longitude, personas.username  as username
+                    FROM photos as p
                     JOIN
-                    personas  ON photos.idPropietario = personas.id 
-                    WHERE personas.id IN ($usuarios) ORDER BY photos.fechaFotografia DESC;";
-    //  print ($sql);
+                    personas  ON p.idPropietario = personas.id 
+                    WHERE personas.id IN ($usuarios) ORDER BY p.fechaFotografia DESC;";
+//        print ($sql);
         $result = $conn->query($sql);
         include 'connClose_BD.php'; // cierra conexion a BD
         return $result;

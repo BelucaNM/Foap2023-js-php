@@ -1,24 +1,22 @@
 
 <?php
 require "funciones.php";
- if (isset($_SESSION["usuario"])) { // Identificación Correcta . En XarxaPrivada
-    $usuario =$_SESSION["usuario"];
-    $idUsuario =$_SESSION["idUsuario"]; 
-
-    
-    $usuarios = [$idUsuario];
-
-    
+  
+   
+    $usuarios = [6];
     $photos = obtener_photos($usuarios); // se busca mensajes del user y de sus subscriptores
     $fotos = [];
     while ($row = $photos->fetch_assoc()) {
+    //    print_r( $row);
         $row['ubicacion']="";
         $fotos[] = $row;};
-
+    //print_r($fotos);
+    var_dump($fotos);
     header('Content-Type: application/json');
-    echo json_encode($fotos);
+
+    $A= json_encode($fotos);
+    echo $A;
+    echo json_last_error(); 
     
-} else {
-    echo null;
-};
+
 ?>
