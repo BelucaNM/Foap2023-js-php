@@ -95,7 +95,7 @@
             El indice en el POST es el name <-->
             </form>
     </div>
-        <div class = "container mt-3 bg-light shadow-lg">
+    <div class = "container mt-3 bg-light shadow-lg">
         <a class = "btn btn-lg btn-link"  href = "formRegistro.php" name="signUp" value="Sign Up">Sign Up</a> 
     </div>
     </div>

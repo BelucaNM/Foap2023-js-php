@@ -27,7 +27,6 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-//       fetch('./coordinates.json')
         fetch('./fotos-json.php')
             .then(response => response.json())
             .then(data => {
@@ -46,7 +45,7 @@
                             .bindPopup(popup);
                         };
                         //Add an image to the map
-                        var imageUrl = element.url;
+/*                        var imageUrl = element.url;
                         var errorOverlayUrl = '';
                         var altText = element.alt;
                         var latLngBounds = L.latLngBounds([[element.latitude, element.longitude]]);
@@ -56,7 +55,7 @@
                             errorOverlayUrl: errorOverlayUrl,
                             alt: altText,
                             interactive: true
-                             }).addTo(map);
+                             }).addTo(map); */
                 });
             });
 

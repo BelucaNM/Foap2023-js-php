@@ -72,7 +72,7 @@
             <h5 class = "card-title"><?= $row["nombre"]; ?></h5>
             <img class="card-img-top" src="<?=$row['url'];?>" alt="<?=$row['nombre'];?>"/>
             <div class="card-body"> 
-                        <a type="button" class="card-link" href="verDetalles.php?id=<?= $row["id"];?>">Ver + detalles</a>
+                        <a type="button" class="card-link" href="verCarousel.html?id=<?= $row["id"];?>">Carousel</a>
                         <br><br>
                         <p class  = "card-text" >Cortesia de: <?= $row["username"]; ?></p> 
                         <p class  = "card-text" >Fecha Registro: <?= $row["fechaRegistroBD"]; ?></p> 
